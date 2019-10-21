@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -21,18 +23,34 @@ class NewVisitorTest(unittest.TestCase):
 		# Она видит, что заголовок и шапка страницы говорят о списках
 		# неотложных дел
 		self.assertIn('To-Do',self.browser.title)
-		self.fail('Закончить тест!')
+		header_text = self.browser.find_element_by_tag_name('h1').header_text
+		self.assertIn('To-Do',header_text)
 
 		# Ей сразу же предлогается ввести элементт списка
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.asserEqual(
+			inputbox.get_attribute('placeholder'),
+			'Enter a to-do item'
+		)
+
 
 		# Она набирает в текстовом поле "купить павлиные перья"
-
+		inputbox.send_keys('Купить павлиные перья')
 		# Когда она нажимает enter, страница обновляется, и теперь страница
 		# содержит "1: Купить павлиные перья" в качестве элемента списка
+		inputbox.send_keys(Keys.ENTER)
+		time.sleep(1)
+
+		table = self.browser.find_element_by_id('id_last_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.asserTrue(
+			any(row.text == '1: Купить павлиные перья' for row in  rows)
+		)
 
 		# Текстовое поле по-прежнему приглашает ее добавить еще один элемент.
 		# Она вводит "Сделать мушку из павлиньих перьев"
-		 
+		
+		self.fail('Закончить тест!')
 		# Страница снова обновляется,и теперь показывает оба элемента ее списка.
 
 		# Эдит интересно, запомнит ли сайт ее список. Далее она видит, что
