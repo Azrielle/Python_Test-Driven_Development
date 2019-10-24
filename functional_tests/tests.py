@@ -97,10 +97,11 @@ class NewVisitorTest(LiveServerTestCase):
 		# Мы используем новй сеан браузера, тем самым очеспечивая, чтобы никакая
 		# информация от Эдит не пришла через данныу kookie и пр.
 		self.browser.quit
+		time.sleep(1)
 		self.browser = webdriver.Firefox()
 
 		# Френсис посещает домашнюю страницу. Нет никаких признаков списка Эдит
-		self.browser.get(live_server_url)
+		self.browser.get(self.live_server_url)
 		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('Купить павлиньи перья', page_text)
 		self.assertNotIn('Сделать мушку', page_text)

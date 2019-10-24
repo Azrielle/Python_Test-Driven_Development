@@ -23,7 +23,7 @@ class HomePageTest(TestCase):
 		'''тест: переадресует после post-запроса'''
 		response = self.client.post('', data={'item_text': 'A new list item'})
 		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['location'], '/')
+		self.assertEqual(response['location'], '/lists/one-list-world/')
 
 
 	def test_only_saves_items_when_necessary(self):
@@ -36,10 +36,10 @@ class HomePageTest(TestCase):
 		Item.objects.create(text='itemey 1')
 		Item.objects.create(text='itemey 2')
 
-		response = self.client.get('/')
+		response = self.client.get('/lists/one-list-world/')
 
-		self.assertIn('itemey 1', response.content.decode())
-		self.assertIn('itemey 2', response.content.decode())
+		self.assertContains(response, 'itemey 1')
+		self.assertContains(response, 'itemey 2')
 
 
 class ItemModelTest(TestCase):
