@@ -11,6 +11,7 @@ class HomePageTest(TestCase):
 		response = self.client.get('/')
 		self.assertTemplateUsed(response, 'home.html')
 
+
 	def test_can_save_a_POST_request(self):
 		''' тест: можно сохранить post-запрос'''
 		self.client.post('', data={'item_text': 'A new list item'})
@@ -31,7 +32,15 @@ class HomePageTest(TestCase):
 		self.client.get('/')
 		self.assertEqual(Item.objects.count(), 0)
 
-	def test_display_all_list_items(self):
+class ListViewTest( TestCase ):
+	'''тест представление списка'''
+
+	def test_uses_list_template(self):
+		'''тест: используется шаблон списка'''
+		response = self.client.get('/lists/one-list-world/')
+		self.assertTemplateUsed(response, 'list.html')
+
+	def test_display_all_items(self):
 		'''тест: отображаются все элементы списка'''
 		Item.objects.create(text='itemey 1')
 		Item.objects.create(text='itemey 2')

@@ -25,7 +25,7 @@ class NewVisitorTest(LiveServerTestCase):
 			try:
 				table = self.browser.find_element_by_id('id_list_table')
 				rows = table.find_elements_by_tag_name('tr')
-				self.assertIn(row_text, [row_text for row in rows])
+				self.assertIn(row_text, [row.text for row in rows])
 				return
 			except (AssertionError, WebDriverException) as e:
 				if time.time() - start_time > MAX_WAIT:
@@ -96,8 +96,7 @@ class NewVisitorTest(LiveServerTestCase):
 
 		# Мы используем новй сеан браузера, тем самым очеспечивая, чтобы никакая
 		# информация от Эдит не пришла через данныу kookie и пр.
-		self.browser.quit
-		time.sleep(1)
+		self.browser.quit()
 		self.browser = webdriver.Firefox()
 
 		# Френсис посещает домашнюю страницу. Нет никаких признаков списка Эдит
@@ -108,7 +107,7 @@ class NewVisitorTest(LiveServerTestCase):
 
 		# Френсис начинает новый список, вводя новый элемент. Он менее
 		# интересе чем список Эдит...
-		inputbox = self.browser,find_element_by_id('id_new_item')
+		inputbox = self.browser.find_element_by_id('id_new_item')
 		inputbox.send_keys('Купить молоко')
 		inputbox.send_keys(Keys.ENTER)
 		self.wait_for_row_in_list_table('1: Купить молоко')
