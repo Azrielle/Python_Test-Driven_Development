@@ -10,6 +10,29 @@
 </head>
 <body>
 	<div class="container">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<a href="/" class="navbar-brand">Superlists</a>
+				<form action="{% url 'send_login_email' %}" method="POST" class="navbar-form navbar-rigth">
+					<span>Enter email to log in:</span>
+					<input type="text" class="form-control" name="email">
+					{% csrf_token %}
+				</form>
+			</div>
+		</nav>
+		{% if messages %}
+			<div class="row">
+				<div class="col-md-8">
+					{% for message in messages %}
+						{% if message.level_tag == 'seccess' %}
+							<div class="alert alert-success">{{ message }}</div>
+						{% else %}
+							<div class="alert alert-warnning">{{ message }}</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		{% endif %}
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3 jumbotron">
 				<div class="text-center">
