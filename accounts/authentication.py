@@ -1,13 +1,13 @@
 import sys
 from accounts.models import ListUser, Token
 
-class PasswordlessAuthenticationBackend(objects):
+class PasswordlessAuthenticationBackend(object):
 	'''серверный процессор беспорольной аутентификации'''
 
 	def authenticate(self, uid):
 		'''авторизовать'''
 		print('uid', uid, file=sys.stderr)
-		if not Toke.objects.filter(uid=uid).exists():
+		if not Token.objects.filter(uid=uid).exists():
 			print('no token found', file=sys.stderr)
 			return None
 		token = Token.objects.get(uid=uid)

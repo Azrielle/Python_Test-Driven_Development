@@ -28,8 +28,10 @@ def login(request):
 	print('login view', file=sys.stderr)
 	uid = request.GET.get('uid')
 	user = authenticate(uid=uid)
+	print(user, file=sys.stderr)
 	if user is not None:
 		auth_login(request, user)
+		print('ok', file=sys.stderr)
 	return redirect('/')
 
 def logout(request):
