@@ -20,7 +20,7 @@ class LoginTest(FunctionalTest):
 		# замечает раздел "войти" в навигационной панели
 		# Он говорит ей ввести свой адрес электронной почты, что она и делает
 		if self.staging_server:
-			test_email = 'azrielle_test@yahoo.com'
+			test_email = 'azrielle.input@gmail.com'
 		else:
 			test_email = 'edith@example.com'
 
@@ -70,13 +70,13 @@ class LoginTest(FunctionalTest):
 
 		email_id = None
 		start = time.time()
-		inbox = poplib.POP3_SSL('pop.mail.yahoo.com')
+		inbox = poplib.POP3_SSL('pop.gmail.com')
 		try:
 			inbox.user(test_email)
 			inbox.pass_(os.environ['YAHOO_PASSWORD'])
-			while time.time() - start < 60:
+			while time.time() - start < 50:
 				# получить 10 самых новых сообщений
-				count, _ = inbox.start()
+				count, _ = inbox.stat()
 				for i in reversed(range(max(1, count - 10),count + 1)):
 					print('getting msg', i)
 					_, lines, __ = inbox.retr(i)
