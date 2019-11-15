@@ -7,7 +7,6 @@ from .base import FunctionalTest
 TEST_EMAIL = 'edith@example.com'
 SUBJECT = 'Your login link for Superlists'
 
-import sys
 class LoginTest(FunctionalTest):
 	'''тест регистрации в системе'''
 
@@ -42,7 +41,6 @@ class LoginTest(FunctionalTest):
 		self.assertIn(self.live_server_url, url)
 
 		# Эдит нажимает на ссылку
-		print(url,file=sys.stderr)
 		self.browser.get(url)
 
 		# Она зарегистрирована в системе!
@@ -51,3 +49,13 @@ class LoginTest(FunctionalTest):
 		)
 		navbar = self.browser.find_element_by_css_selector('.navbar')
 		self.assertIn(TEST_EMAIL, navbar.text)
+
+		# Теперь она выходит из системы
+		self.browser.find_element_by_link_text('Log out').click()
+
+		# Она вышла из системы
+		self.wait_for(
+			lambda: self.browser.find_element_by_name('email')
+		)
+		navbar = self.browser.find_element_by_css_selector('.navbar')
+		self.assertNotIn(TEST_EMAIL, navbar.text)
