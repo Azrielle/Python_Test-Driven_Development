@@ -1,3 +1,4 @@
+from .server_tools import reset_database
 import os
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -15,6 +16,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 		self.staging_server = os.environ.get('STAGING_SERVER')
 		if self.staging_server:
 			self.live_server_url = 'http://' + self.staging_server
+			reset_database(self.staging_server)
 
 	def tearDown(self):
 		'''демонтаж'''
