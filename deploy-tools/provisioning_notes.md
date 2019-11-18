@@ -20,6 +20,7 @@
 
 * см. gunicorn-systemd.template.service
 * заменить SITENAME, например, на staging.my-domian.com
+* заменить SEKRIT почтовым поролем 
 
 ## Структура папок:
 Если допустить, что есть учетная запись пользователя в /home/username

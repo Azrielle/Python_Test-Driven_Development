@@ -8,7 +8,7 @@ def _get_manage_dot_py(host):
 def reset_database(host):
     '''обнулить базу данных'''
     manage_dot_py = _get_manage_dot_py(host)
-    with settings(host_string=f'ubuntu@{host}'):
+    with settings(host_string=f'ubuntu@{host}', key_filename="e:/azrielle.pem", user="ubuntu"):
         run(f'{manage_dot_py} flush --noinput')
 
 def create_session_on_server(host, email):
