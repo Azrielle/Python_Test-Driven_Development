@@ -51,7 +51,7 @@ class MyListsTest(FunctionalTest):
 		# Она решает начать еще один список, чтобы только убедиться
 		self.browser.get(self.live_server_url)
 		self.add_list_item('Click cows')
-		secpnd_list_url = self.browser.current_url
+		second_list_url = self.browser.current_url
 
 		# Под заголовком "Мои списки" появляется новый список
 		self.browser.find_element_by_link_text('My lists').click()
@@ -66,6 +66,6 @@ class MyListsTest(FunctionalTest):
 		# Она выходит из системы. Опция "Мои списки" исчезает
 		self.browser.find_element_by_link_text('Log out').click()
 		self.wait_for( lambda: self.assertEqual(
-			self.browser.find_element_by_link_text('My lists'),
+			self.browser.find_elements_by_link_text('My lists'),
 			[]
 		))
