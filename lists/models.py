@@ -1,6 +1,6 @@
+from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 # Create your models here.
 class List(models.Model):
@@ -10,15 +10,9 @@ class List(models.Model):
 		'''получить абсолютный url'''
 		return reverse('view_list', args=[self.id])
 	
-	@staticmethod
-	def create_new(first_item_text, owner=None):
-		'''создать новый'''
-		list_ = List.objects.create(owner=owner)
-		Item.objects.create(text=first_item_text, list=list_)
-		return list_
-	
 	@property
 	def name(self):
+		'''имя'''
 		return self.item_set.first().text
 
 class Item(models.Model):
@@ -32,4 +26,6 @@ class Item(models.Model):
 
 	def __str__(self):
 		return self.text
+
+	
 
