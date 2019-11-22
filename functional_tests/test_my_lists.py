@@ -1,4 +1,5 @@
 from .base import FunctionalTest
+from .list_page import ListPage
 
 class MyListsTest(FunctionalTest):
 	'''тест ариложения "Мои списки"'''
@@ -11,8 +12,8 @@ class MyListsTest(FunctionalTest):
 
 		# Эдит открывает домашнюю страницу и начинает новый список
 		self.browser.get(self.live_server_url)
-		self.add_list_item('Reticulate splines')
-		self.add_list_item('Immanentize eschaton')
+		list_page = ListPage(self).add_list_item('Reticulate splines')
+		list_page.add_list_item('Immanentize eschaton')
 		first_list_url = self.browser.current_url
 
 		# Она замечает ссылку на "Мои списки" в первый раз
@@ -30,7 +31,7 @@ class MyListsTest(FunctionalTest):
 		
 		# Она решает начать еще один список, чтобы только убедиться
 		self.browser.get(self.live_server_url)
-		self.add_list_item('Click cows')
+		list_page.add_list_item('Click cows')
 		second_list_url = self.browser.current_url
 
 		# Под заголовком "Мои списки" появляется новый список

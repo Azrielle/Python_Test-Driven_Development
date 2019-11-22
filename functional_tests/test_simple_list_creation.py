@@ -1,6 +1,7 @@
 from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from .list_page import ListPage
 
 
 class NewVisitorTest(FunctionalTest):
@@ -19,34 +20,29 @@ class NewVisitorTest(FunctionalTest):
 		self.assertIn('To-Do',header_text)
 
 		# Ей сразу же предлогается ввести элементт списка
-		inputbox = self.get_item_input_box()
+		list_page = ListPage(self)
+
 		self.assertEqual(
-			inputbox.get_attribute('placeholder'),
+			list_page.get_item_input_box().get_attribute('placeholder'),
 			'Enter a to-do item'
 		)
 
 		# Она набирает в текстовом поле "купить павлиные перья"
-		inputbox.send_keys('Купить павлиньи перья')
 		# Когда она нажимает enter, страница обновляется, и теперь страница
 		# содержит "1: Купить павлиные перья" в качестве элемента списка
-		inputbox.send_keys(Keys.ENTER)
-		self.wait_for_row_in_list_table('1: Купить павлиньи перья')
+		list_page.add_list_item('Купить павлиньи перья')
 
 		# Текстовое поле по-прежнему приглашает ее добавить еще один элемент.
 		# Она вводит "Сделать мушку из павлиньих перьев"
-		inputbox = self.get_item_input_box()
-		inputbox.send_keys('Сделать мушку из павлиньих перьев')
-		inputbox.send_keys(Keys.ENTER)
+		list_page.add_list_item('Сделать мушку из павлиньих перьев')
 
 		# Страница снова обновляется,и теперь показывает оба элемента ее списка.
-		self.wait_for_row_in_list_table('1: Купить павлиньи перья')
-		self.wait_for_row_in_list_table('2: Сделать мушку из павлиньих перьев')
+		list_page.wait_for_row_in_list_table(item_number=1, item_text='Купить павлиньи перья')
+		list_page.wait_for_row_in_list_table(item_number=2, item_text='Сделать мушку из павлиньих перьев')
 		
-
 		# Эдит интересно, запомнит ли сайт ее список. Далее она видит, что
 		# сайт сгенерировал для нее уникальный URL-адрес - об этом 
 		# выводится небольшой текст с обьяснениями.
-		# self.fail('Закончить тест!')
 
 		# Она посещает этот URL-адрес - ее список по-прежнему там.
 
@@ -57,11 +53,8 @@ class NewVisitorTest(FunctionalTest):
 		'''тест: многочисленые пользователи могут начать списки по разным url'''
 		# Эдит начинает новый список
 		self.browser.get(self.live_server_url)
-		inputbox = self.get_item_input_box()
-		inputbox.send_keys('Купить павлиньи перья')
-		inputbox.send_keys(Keys.ENTER)
-		self.wait_for_row_in_list_table('1: Купить павлиньи перья')
-
+		ListPage(self).add_list_item('Купить павлиньи перья')
+		
 		# Она замечает, что ее список имеет уникальный URL-адрес
 		edit_list_url = self.browser.current_url
 		self.assertRegex(edit_list_url, '/lists/.+')
@@ -81,10 +74,8 @@ class NewVisitorTest(FunctionalTest):
 
 		# Френсис начинает новый список, вводя новый элемент. Он менее
 		# интересе чем список Эдит...
-		inputbox = self.get_item_input_box()
-		inputbox.send_keys('Купить молоко')
-		inputbox.send_keys(Keys.ENTER)
-		self.wait_for_row_in_list_table('1: Купить молоко')
+		ListPage(self).add_list_item('Купить молоко')
+
 
 		# Френсис получает уникальный URL-адрес
 		frencis_list_url = self.browser.current_url
